@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+from pathlib import Path
 from typing import Union, Mapping
 
 import typer
@@ -11,7 +12,7 @@ from telegram.ext import (
     CallbackQueryHandler,
     CommandHandler,
     ContextTypes,
-    ConversationHandler,
+    ConversationHandler, PicklePersistence,
 )
 
 from .gryphon import Gryphon
@@ -142,9 +143,14 @@ states = {'new_gryphon': [CallbackQueryHandler(new_gryphon, pattern=r"^new_gryph
           }
 
 
-def main(token: Annotated[str, typer.Argument(help='Telegram bot token')]) -> None:
+def main(token: Annotated[str, typer.Argument(help='Telegram bot token')],
+         persistence_path: Annotated[Path, typer.Argument(help='Where to save persistence files')]) -> None:
     """Run the bot."""
-    application = Application.builder().token(token).build()
+
+    persistence_path.mkdir(parents=True, exist_ok=True)  # create persistence_path if it doesn't exist
+
+    persistence = PicklePersistence(filepath=persistence_path / 'persistence.pkl')
+    application = Application.builder().token(token).persistence(persistence).build()
 
     conv_handler = ConversationHandler(
         per_user=True, per_message=False,
