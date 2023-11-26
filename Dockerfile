@@ -7,4 +7,4 @@ RUN pip install .
 
 ENV BOT_TOKEN=-1
 
-CMD [ "sh", "-c", "python -m gryphon-telegram-bot.main $BOT_TOKEN /persistence" ]
+CMD [ "sh", "-c", "python -m gryphon_telegram_bot.main $BOT_TOKEN /persistence" ]
