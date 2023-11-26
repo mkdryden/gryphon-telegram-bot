@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  telegram-stats-bot:
+    # Uncomment to use local version
+    # build:
+      # context: .
+    image: mkdryden/gryphon-telegram-bot:master
+    environment:
+      BOT_TOKEN: 111111111:AAA-MpBVQ7i2cIRfwedfsfesdg6webc0r-Y
+    volumes:
+      - ./persistence:/persistence
